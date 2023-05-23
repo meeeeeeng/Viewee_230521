@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Viewee_230521</string>
+
+        <string name="Detail_title">님의 면접 세부결과</string>
+        <string name="main_title">님의 면접결과</string>
+
+    <string name="main_title_day">일자의 면접결과</string>
+
+        <string name="Detail_1_PR">자기소개</string>
+        <string name="Detail_2_Career1">경력1</string>
+        <string name="Detail_3_Career2">경력2</string>
+        <string name="Detail_4_Position1">직무1</string>
+        <string name="Detail_5_Position2">직무2</string>
+
+
+    </resources>
