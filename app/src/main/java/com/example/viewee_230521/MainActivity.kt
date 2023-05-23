@@ -16,6 +16,7 @@
 
 package com.codelab.basiclayouts
 
+import android.icu.text.AlphabeticIndex.Bucket.LabelType
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -37,11 +38,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -58,9 +62,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -68,6 +74,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.viewee_230521.R
 import org.w3c.dom.Text
+import kotlin.math.round
 //mport com.codelab.basiclayouts.ui.theme.MySootheTheme
 import androidx.compose.material.TextField as TextField
 
@@ -128,10 +135,13 @@ fun SearchBar(
 fun MainFeedbackCard(
     //  @DrawableRes drawable: Int,
     text0: String,
-    j : Int = 1,
+    j : Int = 0,
     modifier: Modifier = Modifier
+        .clip(RoundedCornerShape(10.dp))
 ) {
     var usBlue = Color(red = 37, green = 88, blue = 171)
+    val list = (1..10).map { it.toString() }
+    
     Surface(
         shape = MaterialTheme.shapes.small,
         modifier= Modifier
@@ -152,7 +162,11 @@ fun MainFeedbackCard(
             //     modifier = Modifier.size(56.dp)
             //  )
 
-            Text(text = "$j",
+
+
+
+
+            Text(text = list[j].toString(),
                 modifier= Modifier
                     .weight(1f, fill = true)
                     .padding(
@@ -218,10 +232,19 @@ fun DetailFeedbackCard(
     Surface(
         shape = MaterialTheme.shapes.small,
         modifier= Modifier
-    ) {
+        .clip(RoundedCornerShape(10.dp))
+
+    ) {var usBlue = Color(red = 37, green = 88, blue = 171)
         Row(
             verticalAlignment = Alignment.CenterVertically
-            ,modifier=Modifier.width(90.dp)
+            ,modifier= Modifier
+                .width(90.dp)
+                .background(usBlue.copy(alpha = 0.05f))
+                //.padding(5.dp)
+                .border(1.dp,(usBlue.copy(alpha = 0.5f)),RoundedCornerShape(10.dp))
+
+
+
         ){
             //Image(
             //  painter = painterResource(drawable),
@@ -229,8 +252,11 @@ fun DetailFeedbackCard(
             //     contentScale = ContentScale.Crop,
             //     modifier = Modifier.size(56.dp)
             //  )
+            //val list = (1..text1.count()).map { it.toString() }
 
-            Text(text= "$k "+text1,
+
+
+            Text(text= text1,
                 modifier= Modifier
 
                     .padding(
@@ -239,9 +265,11 @@ fun DetailFeedbackCard(
                     ),
                 textAlign = TextAlign.Left
                 ,fontSize = 12.sp
+                , color = Color.Gray
 
 
             )
+
                 //style = MaterialTheme.typography.h6)
 
         }
@@ -258,6 +286,8 @@ fun MainFeedbackCardGrid(
     modifier: Modifier = Modifier
 ) {
     var j = 0
+    val list = (1..10).map { it.toString() }
+
     LazyHorizontalGrid(
         contentPadding = PaddingValues(horizontal = 20.dp)
 
@@ -266,7 +296,7 @@ fun MainFeedbackCardGrid(
         ,modifier = Modifier.height(200.dp),
         rows = GridCells.Fixed(1)){
 
-        items(alignMainFeedbackData) { item ->
+        items(alignMainFeedbackData.size) { index ->
             MainFeedbackCard(
                 // drawable = item.drawable,
                 text0 = alignMainFeedbackData.get(j++)
@@ -281,22 +311,30 @@ fun MainFeedbackCardGrid(
 @Composable
 fun DetailFeedbackCardGrid(
     modifier: Modifier = Modifier
+
 ) {
     var i = 0
+    val list = (1..10).map { it.toString() }
+
     LazyHorizontalGrid(
         contentPadding = PaddingValues(horizontal = 20.dp)
         ,verticalArrangement = Arrangement.spacedBy(20.dp)
         ,horizontalArrangement = Arrangement.spacedBy(20.dp)
-        ,modifier = Modifier.height(180.dp),
-        rows = GridCells.Fixed(2)){
-        items(alignDetailFeedbackData){ item->
-            DetailFeedbackCard(
-                // drawable = item.drawable,
-                text1 = alignDetailFeedbackData.get(i++)
-            )
+        ,modifier = Modifier.height(180.dp)
+        ,rows = GridCells.Fixed(2)
 
-        }
-    }
+        ,content = {
+
+            items(alignDetailFeedbackData.size) { index ->
+
+                DetailFeedbackCard(
+                    // drawable = item.drawable,
+
+                    text1 = list[index] + " " +alignDetailFeedbackData.get(i++)
+                )
+
+            }
+        })
     // Implement composable here
 }
 
@@ -311,6 +349,7 @@ fun HomeSection(
 
     Text("$userName"+stringResource(id=title)
         ,style = MaterialTheme.typography.h6
+        , color = Color.DarkGray
         ,modifier= Modifier
             .paddingFromBaseline(
                 top = 45.dp,
@@ -437,4 +476,44 @@ private val alignMainFeedbackData = arrayOf(
 @Composable
 fun MyPreview() {
     MyApp()
+}
+
+
+
+@Preview
+@Composable
+fun LazyVerticalGridDemo(){
+    val list = (1..10).map { it.toString() }
+
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(128.dp),
+
+        // content padding
+        contentPadding = PaddingValues(
+            start = 12.dp,
+            top = 16.dp,
+            end = 12.dp,
+            bottom = 16.dp
+        ),
+        content = {
+            items(list.size) { index ->
+                Card(
+                    backgroundColor = Color.Red,
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .fillMaxWidth(),
+                    elevation = 8.dp,
+                ) {
+                    Text(
+                        text = list[index],
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp,
+                        color = Color(0xFFFFFFFF),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+        }
+    )
 }
