@@ -23,12 +23,16 @@ import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.DragInteraction
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -59,13 +63,18 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 //import androidx.compose.material.icons.filled.Spa
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -77,316 +86,267 @@ import org.w3c.dom.Text
 import kotlin.math.round
 //mport com.codelab.basiclayouts.ui.theme.MySootheTheme
 import androidx.compose.material.TextField as TextField
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {  //ShowTotalFeedback()
-            //VieweeBottomNavigation()
-
-
             MyApp()
-
         }
     }
 }
 
-
-
-
-
-//------------------------------------------------------------------------------------------------------
-
-
-
-
-// Step: Search bar - Modifiers
 @Composable
-fun SearchBar(
+fun MainTopBar(
     modifier: Modifier = Modifier
-
 ) {
-    TextField(
-        value = "",
-        onValueChange = {},
-        leadingIcon={
-            Icon(Icons.Default.Search, contentDescription=null)
-        },
-        placeholder ={
-            Text("Search")
-                     //Text(text="원하시는 검색어를 입력해주세요")
 
-        },
-        colors=TextFieldDefaults.textFieldColors(
-            backgroundColor = MaterialTheme.colors.surface
-        ),
-        modifier= Modifier
-            .heightIn(min = 56.dp)
-            .fillMaxWidth()
-    )
-    // Implement composable here
+    val interactionSource = remember { MutableInteractionSource() }
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        androidx.compose.foundation.Image(
+            modifier = Modifier
+                .width(100.dp)
+                .height(27.dp),
+            imageVector = ImageVector.vectorResource(id = R.drawable.main_logo),
+            contentDescription = null
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(
+                20.dp,
+                alignment = Alignment.CenterHorizontally
+            )
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(18.dp)
+                    .clickableWithoutRipple(
+                        interactionSource = interactionSource,
+                        onClick = { }
+                    ),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
+                contentDescription = "search",
+            )
+            Icon(
+                modifier = Modifier
+                    .width(32.dp)
+                    .height(18.dp)
+                    .clickableWithoutRipple(
+                        interactionSource = interactionSource,
+                        onClick = { }
+                    ),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_menu),
+                contentDescription = "menu"
+            )
+        }
+    }
 }
 
-
-
-// Step: Favorite collection card - Material Surface
-///메인화면_면접결과
+// 메인화면_면접결과
 @Composable
 fun MainFeedbackCard(
-    //  @DrawableRes drawable: Int,
-    text0: String,
-    j : Int = 0,
-    modifier: Modifier = Modifier
-        .clip(RoundedCornerShape(10.dp))
+    modifier: Modifier = Modifier,
+    index: Int
 ) {
     var usBlue = Color(red = 37, green = 88, blue = 171)
-    val list = (1..10).map { it.toString() }
-    
+
     Surface(
         shape = MaterialTheme.shapes.small,
-        modifier= Modifier
-            //.alpha(0.2f)
+        modifier = modifier.clip(RoundedCornerShape(10.dp))
     ) {
         Row(
-          //verticalAlignment = Alignment.CenterVertically,
-            modifier= Modifier
+            modifier = Modifier
                 .width(200.dp)
                 .height(200.dp)
                 .background(usBlue.copy(alpha = 0.2f))
                 .alpha(0.5f)
-        ){
-            //Image(
-            //  painter = painterResource(drawable),
-            //     contentDescription = null,
-            //     contentScale = ContentScale.Crop,
-            //     modifier = Modifier.size(56.dp)
-            //  )
-
-
-
-
-
-            Text(text = list[j].toString(),
-                modifier= Modifier
+        ) {
+            Text(
+                text = (index + 1).toString(),
+                modifier = Modifier
                     .weight(1f, fill = true)
                     .padding(
                         horizontal = 25.dp,
                         vertical = 10.dp
-                    )
-                ,textAlign = TextAlign.Left
-                ,color = usBlue
-                ,fontSize = 70.sp
-
-                // ,style = MaterialTheme.typography.h2
-                )
-
-
-            Column(modifier= Modifier
-                .size(120.dp)
-                  , verticalArrangement = Arrangement.Center
-                ) {
-
-
-                Text(text= text0,
-                    modifier= Modifier
-                        .padding(
-                            horizontal = 2.dp,
-                            vertical = 2.dp
-                        )
-                   // ,textAlign = TextAlign.Start
-                    ,fontSize = 20.sp
-
-                    // ,style = MaterialTheme.typography.h5
-                   )
-
+                    ),
+                textAlign = TextAlign.Left,
+                color = usBlue,
+                fontSize = 70.sp
+            )
+            Column(
+                modifier = Modifier
+                    .size(120.dp),
+                verticalArrangement = Arrangement.Center
+            ) {
                 Text(
-                    stringResource(id =  R.string.main_title_day),
-                    modifier= Modifier
-                        .padding(
-                            horizontal = 2.dp,
-                            vertical = 2.dp
-                        )
-                    ,fontSize = 10.sp
-
-                   )
-
+                    text = alignMainFeedbackData[index],
+                    modifier = Modifier.padding(horizontal = 2.dp, vertical = 2.dp),
+                    fontSize = 20.sp
+                )
+                Text(
+                    stringResource(id = R.string.main_title_day),
+                    modifier = Modifier.padding(horizontal = 2.dp, vertical = 2.dp),
+                    fontSize = 10.sp
+                )
             }
         }
-
     }
-    // Implement composable here
 }
 
 
-
-///메인화면_면접세부결과
-@Composable
-fun DetailFeedbackCard(
-    //  @DrawableRes drawable: Int,
-    text1: String,
-    k : Int = 0,
-
-    modifier: Modifier = Modifier
-) {
-
-    Surface(
-        shape = MaterialTheme.shapes.small,
-        modifier= Modifier
-        .clip(RoundedCornerShape(10.dp))
-
-    ) {var usBlue = Color(red = 37, green = 88, blue = 171)
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-            ,modifier= Modifier
-                .width(90.dp)
-                .background(usBlue.copy(alpha = 0.05f))
-                //.padding(5.dp)
-                .border(1.dp,(usBlue.copy(alpha = 0.5f)),RoundedCornerShape(10.dp))
-
-
-
-        ){
-            //Image(
-            //  painter = painterResource(drawable),
-            //     contentDescription = null,
-            //     contentScale = ContentScale.Crop,
-            //     modifier = Modifier.size(56.dp)
-            //  )
-            //val list = (1..text1.count()).map { it.toString() }
-
-
-
-            Text(text= text1,
-                modifier= Modifier
-
-                    .padding(
-                        horizontal = 5.dp,
-                        vertical = 5.dp
-                    ),
-                textAlign = TextAlign.Left
-                ,fontSize = 12.sp
-                , color = Color.Gray
-
-
-            )
-
-                //style = MaterialTheme.typography.h6)
-
-        }
-
-    }
-    // Implement composable here
-}
-
-
-
-// 메인 화면_면접 결과
+// 메인화면_면접결과(Grid)
 @Composable
 fun MainFeedbackCardGrid(
     modifier: Modifier = Modifier
 ) {
-    var j = 0
-    val list = (1..10).map { it.toString() }
-
     LazyHorizontalGrid(
-        contentPadding = PaddingValues(horizontal = 20.dp)
-
-        ,verticalArrangement = Arrangement.spacedBy(8.dp)
-        ,horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ,modifier = Modifier.height(200.dp),
-        rows = GridCells.Fixed(1)){
+        contentPadding = PaddingValues(horizontal = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier.height(200.dp),
+        rows = GridCells.Fixed(1)
+    ) {
 
         items(alignMainFeedbackData.size) { index ->
             MainFeedbackCard(
-                // drawable = item.drawable,
-                text0 = alignMainFeedbackData.get(j++)
+                index = index
             )
-
         }
     }
-
 }
 
 // 메인화면_면접세부결과
 @Composable
-fun DetailFeedbackCardGrid(
-    modifier: Modifier = Modifier
-
-) {
-    var i = 0
-    val list = (1..10).map { it.toString() }
-
-    LazyHorizontalGrid(
-        contentPadding = PaddingValues(horizontal = 20.dp)
-        ,verticalArrangement = Arrangement.spacedBy(20.dp)
-        ,horizontalArrangement = Arrangement.spacedBy(20.dp)
-        ,modifier = Modifier.height(180.dp)
-        ,rows = GridCells.Fixed(2)
-
-        ,content = {
-
-            items(alignDetailFeedbackData.size) { index ->
-
-                DetailFeedbackCard(
-                    // drawable = item.drawable,
-
-                    text1 = list[index] + " " +alignDetailFeedbackData.get(i++)
-                )
-
-            }
-        })
-    // Implement composable here
-}
-
-// Step: Home section - Slot APIs
-@Composable
-fun HomeSection(
-    @StringRes title :Int,
-    userName:String="김길동",
+fun DetailFeedbackCard(
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
-) { Column(modifier) {
+    detailTitleIndex: Int,
+    detailTitle: String,
+) {
+    // 컬러 따로 관리!!!
+    var usBlue = Color(red = 37, green = 88, blue = 171)
 
-    Text("$userName"+stringResource(id=title)
-        ,style = MaterialTheme.typography.h6
-        , color = Color.DarkGray
-        ,modifier= Modifier
-            .paddingFromBaseline(
-                top = 45.dp,
-                bottom = 15.dp
+    Box(
+        modifier = modifier
+            .background(usBlue.copy(alpha = 0.05f))
+            .border(1.dp, (usBlue.copy(alpha = 0.5f)), RoundedCornerShape(10.dp)),
+    ) {
+        Column(
+            modifier = Modifier.padding(10.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = (detailTitleIndex + 1).toString(),
+                modifier = Modifier,
+                textAlign = TextAlign.Left,
+                fontStyle = FontStyle.Normal,
+                fontSize = 20.sp,
+                color = Color.Gray
             )
-            .padding(horizontal = 20.dp))
-    content()
-}
-    // Implement composable here
-}
-
-// Step: Home screen - Scrolling
-@Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    // Implement composable here
-    Column(modifier.verticalScroll(rememberScrollState())) {
-        Spacer(Modifier.height(20.dp))
-        androidx.compose.foundation.Image(painterResource(
-            R.drawable.main_logo)
-            , contentDescription = null)
-        // SearchBar(
-        //   Modifier.padding(horizontal = 16.dp))
-        HomeSection(title =R.string.main_title ) {
-            MainFeedbackCardGrid() }
-        HomeSection(title = R.string.Detail_title) {
-            DetailFeedbackCardGrid()
+            Text(
+                text = detailTitle,
+                modifier = Modifier,
+                textAlign = TextAlign.Left,
+                fontSize = 12.sp,
+                color = Color.Gray
+            )
         }
-        Spacer(Modifier.height(20.dp))
     }
 }
 
-// Step: Bottom navigation - Material
+// 메인화면_면접세부결과(Grid)
+@Composable
+fun DetailFeedbackCardGrid(
+    modifier: Modifier = Modifier
+) {
+    LazyHorizontalGrid(
+        contentPadding = PaddingValues(horizontal = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
+        horizontalArrangement = Arrangement.spacedBy(20.dp),
+        // 그리드 각 항목들이 사이즈 비율이 안 맞았던 이유
+        // -> LazyHorizontalGrid 높이에 고정 값 주려면 패딩 값이나 space 값 도 계산 해서 해줘야…
+        modifier = modifier.height(220.dp),
+        rows = GridCells.Fixed(2),
+        content = {
+            items(alignDetailFeedbackData.size) { index ->
+                DetailFeedbackCard(
+                    modifier = Modifier.size(100.dp),
+                    detailTitleIndex = index,
+                    detailTitle = alignDetailFeedbackData[index]
+                )
+            }
+        })
+}
+
+
+@Composable
+fun HomeSection(
+    @StringRes title: Int,
+    username: String = "김길동",
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Column(modifier) {
+        Text(
+            "$username" + stringResource(id = title),
+            style = MaterialTheme.typography.h6,
+            color = Color.DarkGray,
+            modifier = Modifier
+                .paddingFromBaseline(
+                    top = 45.dp,
+                    bottom = 15.dp
+                )
+                .padding(horizontal = 20.dp)
+        )
+        content()
+    }
+    // Implement composable here
+}
+
+@Composable
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+) {
+    // Implement composable here
+    Column(modifier = modifier.fillMaxSize()) {
+        MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 25.dp))
+//        Spacer(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(1.dp)
+//                .background(Color.Gray.copy(alpha = 0.5f))
+//        )
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            HomeSection(title = R.string.main_title) {
+                MainFeedbackCardGrid()
+            }
+            HomeSection(title = R.string.Detail_title) {
+                DetailFeedbackCardGrid()
+            }
+//        Spacer(Modifier.height(20.dp))
+        }
+    }
+}
+
 @Composable
 private fun BottomNavigation(modifier: Modifier = Modifier) {
     BottomNavigation(
-        backgroundColor = Color(red = 245, green = 246, blue = 248),//MaterialTheme.colors.background,
-        modifier= Modifier){
+        backgroundColor = Color(
+            red = 245,
+            green = 246,
+            blue = 248
+        ),//MaterialTheme.colors.background,
+        modifier = Modifier
+    ) {
         BottomNavigationItem(
             icon = {
                 Icon(
@@ -401,52 +361,44 @@ private fun BottomNavigation(modifier: Modifier = Modifier) {
             onClick = {}
         )
 
-
-
-
         BottomNavigationItem(
-            selected=false,
-            onClick = {  },
-            icon ={
+            selected = false,
+            onClick = { },
+            icon = {
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
                     contentDescription = null
                 )
             },
-            label= {
+            label = {
                 Text("Play")
             }
         )
         BottomNavigationItem(
-            selected=false,
-            onClick = {  },
-            icon ={
+            selected = false,
+            onClick = { },
+            icon = {
                 Icon(
                     imageVector = Icons.Default.Face,
                     contentDescription = null
-                )            },
-            label= {
+                )
+            },
+            label = {
                 Text("My page")
             }
         )
-
-
     }
-
 }
-
-
-
-// Step: MySoothe App - Scaffold
 
 @Composable
 fun MyApp() {
     MaterialTheme {
-        Scaffold( //backgroundColor = Color(red = 231, green = 236, blue = 244),
+        Scaffold(
             bottomBar = { BottomNavigation() }
         ) { padding ->
-            HomeScreen(Modifier.padding(padding))
-
+            HomeScreen(
+                Modifier.padding(padding)
+            )
         }
     }
 
@@ -454,22 +406,30 @@ fun MyApp() {
 
 private val alignDetailFeedbackData = arrayOf(
     "자기소개", "경험",
-    "직무1",  "직무2",
-    "경력1","경력2",
-    "적성1","적성2",
-
-
+    "직무1", "직무2",
+    "경력1", "경력2",
+    "적성1", "적성2",
 )
 
 private val alignMainFeedbackData = arrayOf(
+    "230313", "230413", "230513", "230613",
+    "230313", "230413", "230513", "230613",
+)
 
-    "230313","230413","230513","230613",
-    "230313","230413","230513","230613",
-
-    )
-
-
-
+fun Modifier.clickableWithoutRipple(
+    interactionSource: MutableInteractionSource,
+    onClick: () -> Unit
+) = composed(
+    factory = {
+        this.then(
+            Modifier.clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = { onClick() }
+            )
+        )
+    }
+)
 
 
 @Preview(widthDp = 360, heightDp = 640)
@@ -478,42 +438,14 @@ fun MyPreview() {
     MyApp()
 }
 
-
-
-@Preview
+@Preview(widthDp = 500, heightDp = 500)
 @Composable
-fun LazyVerticalGridDemo(){
-    val list = (1..10).map { it.toString() }
+fun MyPreview2() {
+    MyApp()
+}
 
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(128.dp),
-
-        // content padding
-        contentPadding = PaddingValues(
-            start = 12.dp,
-            top = 16.dp,
-            end = 12.dp,
-            bottom = 16.dp
-        ),
-        content = {
-            items(list.size) { index ->
-                Card(
-                    backgroundColor = Color.Red,
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .fillMaxWidth(),
-                    elevation = 8.dp,
-                ) {
-                    Text(
-                        text = list[index],
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 30.sp,
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-            }
-        }
-    )
+@Preview(showBackground = true)
+@Composable
+fun MainTopBarPreview() {
+    MainTopBar()
 }
