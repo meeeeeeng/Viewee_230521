@@ -16,42 +16,38 @@
 
 package com.codelab.basiclayouts
 
-import android.icu.text.AlphabeticIndex.Bucket.LabelType
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -60,10 +56,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Search
-//import androidx.compose.material.icons.filled.Spa
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -71,26 +67,24 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.viewee_230521.R
-import org.w3c.dom.Text
-import kotlin.math.round
-//mport com.codelab.basiclayouts.ui.theme.MySootheTheme
-import androidx.compose.material.TextField as TextField
+import com.example.viewee_230521.ui.theme.backgroundGrey
+import com.example.viewee_230521.ui.theme.usBlue
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {  //ShowTotalFeedback()
             MyApp()
+           // DataInputScreen()
         }
     }
 }
@@ -228,7 +222,7 @@ fun DetailFeedbackCard(
     detailTitle: String,
 ) {
     // 컬러 따로 관리!!!
-    var usBlue = Color(red = 37, green = 88, blue = 171)
+    //var usBlue = Color(red = 37, green = 88, blue = 171)
 
     Box(
         modifier = modifier
@@ -404,6 +398,302 @@ fun MyApp() {
 
 }
 
+//================================= 정보기입화면
+
+
+
+//정보입력카드
+@Composable
+fun DataInputCard(
+    ShowText:String,
+    //InputText: String,
+    //onTextChanged: (String) -> Unit
+) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(7.dp),
+        verticalArrangement = Arrangement.spacedBy(7.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+
+    ) {
+
+
+        Text(text = ShowText,
+            modifier = Modifier
+
+                .width(250.dp),
+
+            textAlign = TextAlign.Left,
+            fontStyle = FontStyle.Normal,
+            fontSize = 13.sp,
+            color = Color.Gray
+        )
+
+
+        OutlinedTextField(
+            value = "",
+            //onValueChange = onTextChanged,
+            modifier = Modifier
+                .width(250.dp)
+                .height(40.dp),
+
+            onValueChange = {
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = backgroundGrey,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            )
+        )
+
+    }
+}
+
+
+
+
+//디음버튼
+@Preview(showBackground = true)
+@Composable
+fun NextButton( modifier: Modifier = Modifier ) {
+
+    val interactionSource = remember { MutableInteractionSource() }
+/*
+    Icon(
+        modifier = Modifier
+            .size(100.dp)
+            .clickableWithoutRipple(
+                interactionSource = interactionSource,
+                onClick = { }
+            ),
+        imageVector = ImageVector.vectorResource(id = R.drawable.ic_nextbutton),
+        contentDescription = "next"
+    )*/
+
+
+    Image(imageVector =ImageVector.vectorResource
+            (id = R.drawable.ic_nextbutton),
+        contentDescription =null,
+
+        modifier= Modifier
+            .padding(vertical = 15.dp, horizontal = 5.dp)
+            .clickable { }
+            .fillMaxWidth()
+
+
+
+    )
+
+}
+
+//종료버튼
+@Preview(showBackground = true)
+@Composable
+fun QuitButton(modifier: Modifier = Modifier) {
+
+    val interactionSource = remember { MutableInteractionSource() }
+    /*
+        Icon(
+            modifier = Modifier
+                .size(100.dp)
+                .clickableWithoutRipple(
+                    interactionSource = interactionSource,
+                    onClick = { }
+                ),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_nextbutton),
+            contentDescription = "next"
+        )*/
+
+
+    Image(imageVector =ImageVector.vectorResource
+        (id = R.drawable.ic_quitbutton),
+        contentDescription =null,
+
+        modifier= Modifier
+            //.padding(vertical = 5.dp, horizontal = 5.dp)
+            .clickable { }
+            .fillMaxWidth()
+            .size(40.dp)
+
+    )
+
+}
+
+//정보입력카드모음1
+@Composable
+fun DataInput1(modifier: Modifier = Modifier) {
+    var InputUserName:String=""
+    var InputBirth:Int
+    var InputSchool:String
+    var InputCareer:String
+
+    Text(
+        text = "자신의 정보를 입력해주세요.",
+        modifier = Modifier
+            .padding(vertical = 40.dp)
+            .fillMaxWidth(),
+        textAlign = TextAlign.Center,
+        fontStyle = FontStyle.Normal,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold ,
+        color = usBlue
+    )
+
+    DataInputCard("이름")
+    DataInputCard("생년월일")
+    DataInputCard("학력")
+    DataInputCard("경력")
+
+
+}
+
+
+//정보입력카드모음2
+@Composable
+fun DataInput2(modifier: Modifier = Modifier) {
+    var InputUserName:String=""
+    var InputBirth:Int
+    var InputSchool:String
+    var InputCareer:String
+
+    Text(
+        text = "자신의 정보를 입력해주세요.",
+        modifier = Modifier
+            .padding(vertical = 40.dp)
+            .fillMaxWidth(),
+        textAlign = TextAlign.Center,
+        fontStyle = FontStyle.Normal,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold ,
+        color = usBlue
+    )
+
+    DataInputCard("지원직무")
+    DataInputCard("자격증 / 어학 / 수상내역")
+    DataInputCard("보유기술 및 능력")
+
+
+
+}
+
+//정보입력카드모음3
+@Composable
+fun DataInput3(modifier: Modifier = Modifier) {
+    var InputUserName:String=""
+    var InputBirth:Int
+    var InputSchool:String
+    var InputCareer:String
+
+
+    Text(
+        text = "자신의 자기소개서를 입력해주세요.",
+        modifier = Modifier
+            .padding(vertical = 10.dp)
+            .fillMaxWidth(),
+        textAlign = TextAlign.Center,
+        fontStyle = FontStyle.Normal,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold ,
+        color = usBlue
+    )
+
+
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(7.dp),
+        verticalArrangement = Arrangement.spacedBy(7.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+
+    ){
+
+        OutlinedTextField(
+            value = "",
+            //onValueChange = onTextChanged,
+            modifier = Modifier
+                .width(250.dp)
+                .height(400.dp),
+            placeholder ={
+                Text(text="자기소개서: 600자 제한",
+                    color = Color.Gray.copy(.5f))
+
+            },
+
+            onValueChange = {
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = backgroundGrey,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            )
+        )
+
+    }
+
+
+
+}
+//정보입력화면1
+@Composable
+fun DataInputScreen1(modifier: Modifier = Modifier) {
+    val InputUserName:String
+    val InputBirth:Int
+    val InputSchool:String
+    val InputCareer:String
+
+
+    Column(modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center
+        , horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        MainTopBar(Modifier.padding(horizontal = 17.dp))
+        DataInput1()
+        NextButton()
+        QuitButton()
+    }
+}
+
+
+
+//정보입력창2
+@Composable
+fun DataInputScreen2() {
+    val InputPosition:String
+    val InputCertificate:String
+    val InputSkill:String
+
+
+    Column(modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center
+        , horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 0.dp))
+        DataInput2()
+        NextButton()
+        QuitButton()
+    }
+}
+
+
+//정보입력창2
+@Composable
+fun DataInputScreen3() {
+    val InputPosition:String
+    val InputCertificate:String
+    val InputSkill:String
+
+
+    Column(modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center
+        , horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 20.dp))
+        DataInput3()
+        NextButton()
+        QuitButton()
+    }
+}
+
+
 private val alignDetailFeedbackData = arrayOf(
     "자기소개", "경험",
     "직무1", "직무2",
@@ -448,4 +738,30 @@ fun MyPreview2() {
 @Composable
 fun MainTopBarPreview() {
     MainTopBar()
+}
+
+
+@Preview(showBackground = true,widthDp = 360, heightDp = 640)
+@Composable
+fun DataInputPreview1() {
+
+        DataInputScreen1()
+
+}
+
+
+@Preview(showBackground = true,widthDp = 360, heightDp = 640)
+@Composable
+fun DataInputPreview2() {
+
+    DataInputScreen2()
+
+}
+
+@Preview(showBackground = true,widthDp = 360, heightDp = 640)
+@Composable
+fun DataInputPreview3() {
+
+    DataInputScreen3()
+
 }
