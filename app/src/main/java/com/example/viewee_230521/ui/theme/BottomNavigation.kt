@@ -1,5 +1,6 @@
 package com.example.viewee_230521.ui.theme
 
+
 /*
  * Copyright 2020 The Android Open Source Project
  *
@@ -164,8 +165,8 @@ fun RowScope.BottomNavigationItem(
 ) {
     val styledLabel: @Composable (() -> Unit)? = label?.let {
         @Composable {
-          //  val style = MaterialTheme.typography.caption.copy(textAlign = TextAlign.Center)
-           // ProvideTextStyle(style, content = label)
+            //  val style = MaterialTheme.typography.caption.copy(textAlign = TextAlign.Center)
+            // ProvideTextStyle(style, content = label)
         }
     }
     // The color of the Ripple should always the selected color, as we want to show the color

@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package com.codelab.basiclayouts
+package com.example.viewee_230521
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
-import androidx.compose.animation.expandHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,6 +30,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -56,10 +56,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -75,7 +73,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.viewee_230521.R
 import com.example.viewee_230521.ui.theme.backgroundGrey
 import com.example.viewee_230521.ui.theme.usBlue
 
@@ -397,6 +394,75 @@ fun MyApp() {
     }
 
 }
+//================================ 면접플레이버튼 화면
+@Composable
+fun Playbutton(){
+
+    Image(imageVector =ImageVector.vectorResource
+        (id = R.drawable.ic_play_button),
+        contentDescription =null,
+
+        modifier= Modifier
+            .padding(vertical = 180.dp)
+            .clickable { }
+            .fillMaxWidth()
+
+
+
+    )
+
+
+
+}
+
+@Composable
+fun PlaybuttonScreen(){
+
+
+    Column(modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center
+        , horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 17.dp))
+
+        Surface(modifier = Modifier) {
+          // Playbutton()
+           //Box(modifier = Modifier.size(650.dp)) {
+
+
+
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Playbutton()
+                        Column(modifier = Modifier
+                            .height(500.dp)
+                            .padding(vertical = 0.dp),
+                            verticalArrangement = Arrangement.Center
+                            ) {
+
+
+                                    Text(
+                                        text = "오늘의 면접 시작하기",
+                                        modifier = Modifier
+                                            .padding(vertical = 50.dp)
+                                            .fillMaxWidth(),
+                                        textAlign = TextAlign.Center,
+                                        fontStyle = FontStyle.Normal,
+                                        fontSize = 15.sp,
+                                        color = Color.Gray
+                                    )
+
+
+                                    QuitButton(Modifier.padding(20.dp))
+
+
+                    }
+                    }
+            }
+           //}
+
+       }
+    }
+
 
 //================================= 정보기입화면
 
@@ -408,6 +474,7 @@ fun DataInputCard(
     ShowText:String,
     //InputText: String,
     //onTextChanged: (String) -> Unit
+
 ) {
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -476,7 +543,7 @@ fun NextButton( modifier: Modifier = Modifier ) {
         contentDescription =null,
 
         modifier= Modifier
-            .padding(vertical = 15.dp, horizontal = 5.dp)
+            .padding(vertical = 10.dp, horizontal = 5.dp)
             .clickable { }
             .fillMaxWidth()
 
@@ -513,7 +580,7 @@ fun QuitButton(modifier: Modifier = Modifier) {
             //.padding(vertical = 5.dp, horizontal = 5.dp)
             .clickable { }
             .fillMaxWidth()
-            .size(40.dp)
+            .size(30.dp)
 
     )
 
@@ -530,7 +597,7 @@ fun DataInput1(modifier: Modifier = Modifier) {
     Text(
         text = "자신의 정보를 입력해주세요.",
         modifier = Modifier
-            .padding(vertical = 40.dp)
+            .padding(vertical = 20.dp)
             .fillMaxWidth(),
         textAlign = TextAlign.Center,
         fontStyle = FontStyle.Normal,
@@ -538,11 +605,18 @@ fun DataInput1(modifier: Modifier = Modifier) {
         fontWeight = FontWeight.Bold ,
         color = usBlue
     )
+    Column(
+        modifier
+            .height(380.dp)
+            .padding(17.dp)) {
 
-    DataInputCard("이름")
-    DataInputCard("생년월일")
-    DataInputCard("학력")
-    DataInputCard("경력")
+
+        DataInputCard("이름")
+        DataInputCard("생년월일")
+        DataInputCard("학력")
+        DataInputCard("경력")
+    }
+
 
 
 }
@@ -559,7 +633,7 @@ fun DataInput2(modifier: Modifier = Modifier) {
     Text(
         text = "자신의 정보를 입력해주세요.",
         modifier = Modifier
-            .padding(vertical = 40.dp)
+            .padding(vertical = 20.dp)
             .fillMaxWidth(),
         textAlign = TextAlign.Center,
         fontStyle = FontStyle.Normal,
@@ -567,12 +641,16 @@ fun DataInput2(modifier: Modifier = Modifier) {
         fontWeight = FontWeight.Bold ,
         color = usBlue
     )
+    Column(
+        modifier
+            .height(380.dp)
+            .padding(17.dp)) {
+        DataInputCard("지원직무")
+        DataInputCard("자격증 / 어학 / 수상내역")
+        DataInputCard("보유기술 및 능력")
 
-    DataInputCard("지원직무")
-    DataInputCard("자격증 / 어학 / 수상내역")
-    DataInputCard("보유기술 및 능력")
 
-
+    }
 
 }
 
@@ -588,7 +666,7 @@ fun DataInput3(modifier: Modifier = Modifier) {
     Text(
         text = "자신의 자기소개서를 입력해주세요.",
         modifier = Modifier
-            .padding(vertical = 10.dp)
+            .padding(vertical = 20.dp)
             .fillMaxWidth(),
         textAlign = TextAlign.Center,
         fontStyle = FontStyle.Normal,
@@ -600,7 +678,8 @@ fun DataInput3(modifier: Modifier = Modifier) {
 
     Column(modifier = Modifier
         .fillMaxWidth()
-        .padding(7.dp),
+        .height(380.dp)
+        .padding(17.dp),
         verticalArrangement = Arrangement.spacedBy(7.dp),
         horizontalAlignment = Alignment.CenterHorizontally
 
@@ -645,12 +724,13 @@ fun DataInputScreen1(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center
         , horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        MainTopBar(Modifier.padding(horizontal = 17.dp))
+        MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 17.dp))
         DataInput1()
         NextButton()
         QuitButton()
     }
 }
+
 
 
 
@@ -666,10 +746,10 @@ fun DataInputScreen2() {
         verticalArrangement = Arrangement.Center
         , horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 0.dp))
+        MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 17.dp))
         DataInput2()
         NextButton()
-        QuitButton()
+        QuitButton(Modifier.padding(200.dp))
     }
 }
 
@@ -686,7 +766,7 @@ fun DataInputScreen3() {
         verticalArrangement = Arrangement.Center
         , horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 20.dp))
+        MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 17.dp))
         DataInput3()
         NextButton()
         QuitButton()
@@ -740,7 +820,11 @@ fun MainTopBarPreview() {
     MainTopBar()
 }
 
-
+@Preview(showBackground = true,widthDp = 360, heightDp = 640)
+@Composable
+fun PlaybuttonScreenPreview(){
+    PlaybuttonScreen()
+}
 @Preview(showBackground = true,widthDp = 360, heightDp = 640)
 @Composable
 fun DataInputPreview1() {
