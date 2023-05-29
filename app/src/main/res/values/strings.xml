@@ -4,7 +4,7 @@
         <string name="Detail_title">님의 면접 세부결과</string>
         <string name="main_title">님의 면접결과</string>
 
-    <string name="main_title_day">일자의 면접결과</string>
+        <string name="main_title_day">일자의 면접결과</string>
 
         <string name="Detail_1_PR">자기소개</string>
         <string name="Detail_2_Career1">경력1</string>
@@ -13,4 +13,9 @@
         <string name="Detail_5_Position2">직무2</string>
 
 
+    <string name="Prepare_1">면접 화면은 어둡지 않은,밝은 환경에서 진행 해주세요</string>
+    <string name="Prepare_2">면접 환경은 조용한 곳에서
+진행 해주세요!</string>
+    <string name="Prepare_3">면접 화면에는 지원자만
+나오도록 해주세요!</string>
     </resources>
