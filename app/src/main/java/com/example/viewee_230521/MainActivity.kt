@@ -16,6 +16,7 @@
 
 package com.example.viewee_230521
 
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -43,6 +44,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -54,6 +56,7 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
@@ -61,9 +64,12 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.materialIcon
 import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -76,10 +82,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.lerp
@@ -102,6 +110,7 @@ class MainActivity : ComponentActivity() {
         setContent {  //ShowTotalFeedback()
             MyApp()
            // DataInputScreen()
+            //PrepareScreen()
         }
     }
 }
@@ -482,6 +491,123 @@ fun PlaybuttonScreen(){
 
        }
     }
+//===================================== 자기소개서 선택 화면 ====================================
+
+@Composable
+fun ChoicePR(){
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        //MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 25.dp))
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .height(80.dp)
+            ,verticalAlignment = Alignment.CenterVertically
+        ) {
+
+
+            IconButton(onClick = { }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    "back",modifier=Modifier
+                        .alpha(.7f)
+                        .padding(horizontal = 30.dp)
+                )
+            }
+
+        }
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            CustomTitleText(modifier = Modifier.padding(top= 10.dp, bottom = 50.dp),"자신의 자기소개서를 선택해주세요.")
+
+            ChoicePRCardGrid()
+
+            NextButton(modifier = Modifier.padding(horizontal = 30.dp), onClick = {})
+
+
+
+        }
+    }
+}
+
+
+@Preview(showBackground =  true,widthDp = 360, heightDp = 640)
+@Composable
+fun ChoicePRScreen(){
+
+    ChoicePR()
+}
+
+
+@Composable
+fun  ChoicePRCard(
+    modifier: Modifier = Modifier,
+    PRTitle: String,
+    PRContent: String
+) {
+
+
+    Box(
+        modifier = modifier
+            //.background(UsBlue.copy(alpha = 0.05f))
+            .border(1.dp, (UsBlue.copy(alpha = 0.5f)), RoundedCornerShape(10.dp)),
+    ) {
+        Column(
+            modifier = Modifier.padding(10.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start
+        ) {
+
+            Text(
+                text = PRTitle,
+                modifier = Modifier
+                    .padding(bottom = 35.dp),
+                textAlign = TextAlign.Left,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                color = UsBlue.copy(.8f)
+            )
+
+            Text(
+                text = PRContent,
+                modifier = Modifier,
+                textAlign = TextAlign.Left,
+                fontSize = 10.sp,
+                color = Color.Gray
+            )
+        }
+    }
+}
+
+
+@Composable
+fun ChoicePRCardGrid(
+    modifier: Modifier = Modifier
+) {
+    LazyVerticalGrid(
+        contentPadding = PaddingValues(horizontal = 30.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        // 그리드 각 항목들이 사이즈 비율이 안 맞았던 이유
+        // -> LazyHorizontalGrid 높이에 고정 값 주려면 패딩 값이나 space 값 도 계산 해서 해줘야…
+        modifier = modifier.height(385.dp),
+        columns = GridCells.Fixed(2),
+        content = {
+            items(PRTitleData.size) { index ->
+                ChoicePRCard(
+                    modifier = Modifier.size(150.dp),
+                    PRTitle = PRTitleData[index],
+                    PRContent = PRContentData[index]
+
+                )
+
+            }
+        })
+}
+
+
 
 
 //=============================== 면접준비 화면 =======================================
@@ -490,7 +616,7 @@ fun PlaybuttonScreen(){
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PreparePlayPagerScreen(modifier: Modifier,images: List<Int>) {
-    val pagerState = rememberPagerState()
+    var pagerState = rememberPagerState()
 
 
         Column(
@@ -499,6 +625,7 @@ fun PreparePlayPagerScreen(modifier: Modifier,images: List<Int>) {
                 .background(BackgroundGrey)
         , verticalArrangement = Arrangement.Center
         ) {
+
             HorizontalPager(pageCount = 5, state = pagerState) {
                 Image(modifier= Modifier.padding(vertical = 40.dp),
                     painter = painterResource(id = images[it]),
@@ -565,12 +692,27 @@ fun PrepareScreen(
     ) {
        // MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 17.dp))
       //  Surface(modifier = Modifier) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .padding(bottom = 20.dp)
+            ,verticalAlignment = Alignment.CenterVertically
+        ) {
 
 
+            IconButton(onClick = { }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    "back",modifier=Modifier
+                        .alpha(.7f)
+                        .padding(horizontal = 30.dp)
+                )
+            }
+            }
             CustomTitleText(modifier = Modifier
                 .fillMaxWidth()
 
-                .padding(top = 60.dp, bottom = 10.dp),"면접 진행 시 꼭 지켜주세요!")
+                .padding(top = 10.dp, bottom = 10.dp),"면접 진행 시 꼭 지켜주세요!")
 
             PreparePlayPagerScreen(modifier=Modifier.padding(vertical = 30.dp), images = prepareImageData)
 
@@ -609,12 +751,28 @@ fun PrepareCam() {
         ,verticalArrangement = Arrangement.Center
         , horizontalAlignment = Alignment.CenterHorizontally
     ) {
-         MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 17.dp))
+         //MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 17.dp))
+
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .padding(bottom = 20.dp)
+            ,verticalAlignment = Alignment.CenterVertically
+        ) {
 
 
+            IconButton(onClick = { }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    "back",modifier=Modifier
+                        .alpha(.7f)
+                        .padding(horizontal = 25.dp)
+                )
+            }
+        }
 
             Column(modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .background(BackgroundGrey)
                 ,verticalArrangement = Arrangement.Center
                 , horizontalAlignment = Alignment.CenterHorizontally
@@ -649,7 +807,7 @@ fun PrepareCam() {
                     )
 
                 NextButton(
-                    modifier = Modifier.padding(horizontal = 30.dp),
+                    modifier = Modifier.padding(horizontal = 20.dp),
                     onClick = {}
                 )
             }
@@ -934,6 +1092,18 @@ fun DataInputPreview3() {
     )
 }
 
+
+private val PRContentData = arrayOf(
+    "저는 대학교 학부 웹 프로그래밍 수업을 통해 기본적인 HTML, CSS, Javascript를 통한 프론트엔드 프로젝트를 경험한 이후 웹에 대해 관심이 생겼습니다...",
+    "블록체인 기술과 암호화폐에 관심이 많았습니다. 여러 포럼 사이트에서 정보를 얻고, 거래소에서 거래를 자주 해보며 하나의 취미로 가지고 있었는 데...",
+    " 4학년 2학기 때 학교수업을 병행하면서 인턴실습을 나가 실제로 기업에서의 백엔드 개발자에 대해 배웠습니다.기업에서 저는 백엔드에 관한 업무와 함께...",
+)
+
+private val PRTitleData = arrayOf(
+    "자기소개 1",
+    "자기소개 2",
+    "자기소개 3",
+)
 
 private val alignDetailFeedbackData = arrayOf(
     "자기소개", "경험",
