@@ -491,6 +491,14 @@ fun PlaybuttonScreen(){
 
        }
     }
+
+
+
+
+
+
+
+
 //===================================== 자기소개서 선택 화면 ====================================
 
 @Composable
@@ -508,7 +516,7 @@ fun ChoicePR(){
             IconButton(onClick = { }) {
                 Icon(
                     Icons.Filled.ArrowBack,
-                    "back",modifier=Modifier
+                    "back",modifier= Modifier
                         .alpha(.7f)
                         .padding(horizontal = 30.dp)
                 )
@@ -616,7 +624,7 @@ fun ChoicePRCardGrid(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PreparePlayPagerScreen(modifier: Modifier,images: List<Int>) {
-    var pagerState = rememberPagerState()
+    val pagerState = rememberPagerState()
 
 
         Column(
@@ -703,7 +711,7 @@ fun PrepareScreen(
             IconButton(onClick = { }) {
                 Icon(
                     Icons.Filled.ArrowBack,
-                    "back",modifier=Modifier
+                    "back",modifier= Modifier
                         .alpha(.7f)
                         .padding(horizontal = 30.dp)
                 )
@@ -764,7 +772,7 @@ fun PrepareCam() {
             IconButton(onClick = { }) {
                 Icon(
                     Icons.Filled.ArrowBack,
-                    "back",modifier=Modifier
+                    "back",modifier= Modifier
                         .alpha(.7f)
                         .padding(horizontal = 25.dp)
                 )
@@ -1065,6 +1073,83 @@ fun DataInputScreen3(
     }
 //        QuitButton(onClick = {})
 }
+
+//===================================== 면접진행 중간 화면 ====================================
+
+
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun PlayPauseScreen(
+){
+
+
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(UsBlue.copy(.1f))
+        ,verticalArrangement = Arrangement.Center
+        , horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 17.dp))
+        //  Surface(modifier = Modifier) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .padding(bottom = 20.dp)
+            ,verticalAlignment = Alignment.CenterVertically
+
+        ) {
+
+
+            IconButton(onClick = { }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    "back",modifier= Modifier
+                        .alpha(.7f)
+                        .padding(horizontal = 30.dp)
+                )
+            }
+        }
+        CustomTitleText(modifier = Modifier
+            .fillMaxWidth()
+
+            .padding(top = 90.dp, bottom = 160.dp)
+            ,"수고하셨습니다.\n" +
+                "조금만 더 힘내세요.\n" +
+                "\n" +
+                "다음으로는 \n" +
+                "역량질문 2개가 제시됩니다.\n" +
+                "\n" +
+                "준비가 되셨디면 \n" +
+                "버튼을 눌러주세요.")
+
+
+        NextButton(
+            modifier = Modifier.padding(horizontal = 30.dp),
+            onClick = {}
+        )
+    }
+
+
+
+
+
+
+}
+
+
+@Preview(showBackground =  true,widthDp = 360, heightDp = 640)
+@Composable
+fun PlayPauseScreenPreview() {
+
+    PlayPauseScreen()
+
+}
+
+
+
+
+
 
 
 @Preview(showBackground = true, widthDp = 360, heightDp = 640)
