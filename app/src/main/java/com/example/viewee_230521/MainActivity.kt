@@ -22,11 +22,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.Center
@@ -55,6 +59,7 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -65,14 +70,19 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.material3.Card
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -84,6 +94,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.modifier.modifierLocalMapOf
+import androidx.compose.ui.modifier.modifierLocalProvider
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -624,7 +635,7 @@ fun ChoicePRCardGrid(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PreparePlayPagerScreen(modifier: Modifier,images: List<Int>) {
-    val pagerState = rememberPagerState()
+    var pagerState = rememberPagerState()
 
 
         Column(
@@ -1084,19 +1095,20 @@ fun PlayPauseScreen(
 ){
 
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(UsBlue.copy(.1f))
-        ,verticalArrangement = Arrangement.Center
-        , horizontalAlignment = Alignment.CenterHorizontally
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(UsBlue.copy(.1f)),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 17.dp))
         //  Surface(modifier = Modifier) {
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp)
-            .padding(bottom = 20.dp)
-            ,verticalAlignment = Alignment.CenterVertically
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .padding(bottom = 20.dp), verticalAlignment = Alignment.CenterVertically
 
         ) {
 
@@ -1104,24 +1116,25 @@ fun PlayPauseScreen(
             IconButton(onClick = { }) {
                 Icon(
                     Icons.Filled.ArrowBack,
-                    "back",modifier= Modifier
+                    "back", modifier = Modifier
                         .alpha(.7f)
                         .padding(horizontal = 30.dp)
                 )
             }
         }
-        CustomTitleText(modifier = Modifier
-            .fillMaxWidth()
+        CustomTitleText(
+            modifier = Modifier
+                .fillMaxWidth()
 
-            .padding(top = 90.dp, bottom = 160.dp)
-            ,"수고하셨습니다.\n" +
-                "조금만 더 힘내세요.\n" +
-                "\n" +
-                "다음으로는 \n" +
-                "역량질문 2개가 제시됩니다.\n" +
-                "\n" +
-                "준비가 되셨디면 \n" +
-                "버튼을 눌러주세요.")
+                .padding(top = 90.dp, bottom = 160.dp), "수고하셨습니다.\n" +
+                    "조금만 더 힘내세요.\n" +
+                    "\n" +
+                    "다음으로는 \n" +
+                    "역량질문 2개가 제시됩니다.\n" +
+                    "\n" +
+                    "준비가 되셨디면 \n" +
+                    "버튼을 눌러주세요."
+        )
 
 
         NextButton(
@@ -1131,11 +1144,8 @@ fun PlayPauseScreen(
     }
 
 
-
-
-
-
 }
+
 
 
 @Preview(showBackground =  true,widthDp = 360, heightDp = 640)
@@ -1148,8 +1158,234 @@ fun PlayPauseScreenPreview() {
 
 
 
+//===================================== 면접진행 후 피드백 화면 ====================================
+
+@Composable
+fun  PlayAfterDetailCard(
+    modifier: Modifier = Modifier,
+    DetailTitle: String,
+    DetailContent: String
+) {
+
+    var isExpanded by remember { mutableStateOf(false) }
 
 
+    val extraPadding by animateDpAsState(
+        if (isExpanded) 48.dp else 0.dp,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        )
+    )
+
+    Box(
+        modifier = modifier
+            //.background(UsBlue.copy(alpha = 0.05f))
+            .border(1.dp, (UsBlue.copy(alpha = 0.5f)), RoundedCornerShape(10.dp))
+            .clickable { isExpanded = !isExpanded },
+
+    ) {
+        Column(
+            modifier = Modifier.padding(5.dp).padding(bottom = extraPadding.coerceAtLeast(0.dp))
+                ,
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
+
+        ) {
+
+       // Row() {
+            
+
+            Text(
+                text = DetailTitle,
+                modifier = Modifier
+                    .padding(top=10.dp,),
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 12.sp,
+                color = Color.DarkGray.copy(.8f)
+            )
+
+
+           IconButton(
+                onClick = { isExpanded = !isExpanded },
+
+            ) {
+               Icon(
+                   Icons.Filled.ArrowDropDown,
+                   "Show",modifier= Modifier
+                       .alpha(.7f)
+                       .fillMaxWidth()
+
+               )
+                    
+
+               // Text(if (isExpanded) "Show more" else "Show less")
+          //  }
+
+        }
+            if (isExpanded)  Text(
+                text = DetailContent,
+                modifier = Modifier
+                    .padding(10.dp),
+                textAlign = TextAlign.Left,
+                fontSize = 11.sp,
+                color = Color.Gray,
+
+                //maxLines = if (isExpanded) Int.MAX_VALUE else 3,
+
+
+            )
+
+            else
+            ""
+
+
+
+
+        }
+    }
+}
+
+
+@Composable
+fun PlayAfterDetailCardGrid(
+    modifier: Modifier = Modifier
+) {
+    CustomTitleText( Modifier.padding(vertical = 30.dp),"230406 면접의 질문 피드백")
+    LazyVerticalGrid(
+        contentPadding = PaddingValues(horizontal = 30.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        // 그리드 각 항목들이 사이즈 비율이 안 맞았던 이유
+        // -> LazyHorizontalGrid 높이에 고정 값 주려면 패딩 값이나 space 값 도 계산 해서 해줘야…
+        modifier = modifier.height(480.dp),
+        columns = GridCells.Fixed(1),
+        content = {
+            items(DetailContentData.size) { index ->
+                PlayAfterDetailCard(
+                    modifier = Modifier,
+                    DetailTitle = DetailTitleData[index],
+                    DetailContent = DetailContentData[index]
+
+                )
+
+            }
+        })
+}
+
+
+@Composable
+fun PlayAfterFeedbackScreen(
+    modifier: Modifier = Modifier,
+) {
+    val scrollState = rememberScrollState()
+
+    Column(modifier = modifier
+        .background(UsBlue.copy(.2f))
+        .fillMaxSize()
+        //.height(240.dp)
+
+    ) {
+        //MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 25.dp))
+
+
+
+            IconButton(onClick = { }) {
+                Icon(
+                    Icons.Filled.Home,
+                    "back", modifier = Modifier
+                        .alpha(.7f)
+                        // .size(20.dp)
+                        .padding(vertical = 20.dp, horizontal = 20.dp)
+
+                )
+            }
+
+
+        Text(
+            text = "면접이 종료되었습니다!\n" +
+                    "\n" +
+                    "수고하셨습니다",
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(top = 40.dp, bottom = 60.dp),
+            textAlign = TextAlign.Center,
+            fontStyle = FontStyle.Normal,
+            fontSize = 25.sp,
+            fontWeight = FontWeight.W800,
+            color = UsBlue
+        )
+
+
+
+            Divider(color = Color.Gray, thickness = 1.dp)
+
+
+
+            Column(
+                modifier = Modifier
+                    .background(Color.White)
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+
+
+            ) {
+
+                CustomTitleText( Modifier.padding(top = 40.dp),"230406 면접의 총평 피드백")
+
+
+
+
+
+        Surface(modifier = Modifier
+            .padding(vertical = 40.dp, horizontal = 30.dp)
+
+           ) {
+
+
+            Text(
+                text = stringResource(id = R.string.PlayAfterFeedbackTotalFeedbackData),
+                modifier = Modifier
+                    .border(
+                        width = 1.dp,
+                        UsBlue.copy(alpha = .5f),
+                        shape = RoundedCornerShape(10.dp)
+                    )
+                    .padding(30.dp),
+
+                textAlign = TextAlign.Left,
+                fontSize = 12.sp,
+                color = Color.Gray
+            )
+        }
+
+
+               //ScrollableColumn()
+                //PlayAfterFeedbackMainFeedbackCardGrid()
+                PlayAfterDetailCardGrid(modifier= Modifier.padding(bottom=30.dp))
+
+            }
+        }
+
+    }
+
+
+@Preview
+@Composable
+fun PlayAfterFeedbackApp() {
+    MaterialTheme {
+        Scaffold(
+           // bottomBar = { BottomNavigation() }
+        ) { padding ->
+            PlayAfterFeedbackScreen(
+                Modifier.padding(padding)
+            )
+        }
+    }
+
+}
 
 
 @Preview(showBackground = true, widthDp = 360, heightDp = 640)
@@ -1177,6 +1413,26 @@ fun DataInputPreview3() {
     )
 }
 
+private val DetailContentData = arrayOf(
+    "수정된 답변: 팀 내 갈등이 생길 경우, 서로의 의견을 존중하고 가능한 한 객관적으로 문제를 분석하여 해결책을 찾으려고 노력합니다. 예를 들어, 각자의 의견을 자세히 들어보고 그 상대방이 왜 그런 의견을 가지는지 이해하려 노력합니다. 그리고 그 문제가 프로젝트에 어떤 영향을 미칠 수 있는지 고려하여, 최선의 해결책을 모색합니다. 만약 서로의 의견이 계속 충돌한다면, 중재자의 도움을 받는 것도 고려해보겠습니다."
+    ,"블록체인 기술과 암호화폐에 관심이 많았습니다. 여러 포럼 사이트에서 정보를 얻고, 거래소에서 거래를 자주 해보며 하나의 취미로 가지고 있었는 데...",
+
+    " 4학년 2학기 때 학교수업을 병행하면서 인턴실습을 나가 실제로 기업에서의 백엔드 개발자에 대해 배웠습니다.기업에서 저는 백엔드에 관한 업무와 함께...",
+    "저는 대학교 학부 웹 프로그래밍 수업을 통해 기본적인 HTML, CSS, Javascript를 통한 프론트엔드 프로젝트를 경험한 이후 웹에 대해 관심이 생겼습니다...",
+    "블록체인 기술과 암호화폐에 관심이 많았습니다. 여러 포럼 사이트에서 정보를 얻고, 거래소에서 거래를 자주 해보며 하나의 취미로 가지고 있었는 데...",
+)
+
+private val DetailTitleData = arrayOf(
+    "질문: \"어떻게 팀에서 갈등이 생길 경우 해결하나요?\"", "경험 질문",
+    "직무 질문", "회사 질문",
+    "기술 질문", "적성 질문",
+    "기타 질문",
+
+
+)
+
+
+
 
 private val PRContentData = arrayOf(
     "저는 대학교 학부 웹 프로그래밍 수업을 통해 기본적인 HTML, CSS, Javascript를 통한 프론트엔드 프로젝트를 경험한 이후 웹에 대해 관심이 생겼습니다...",
@@ -1192,9 +1448,9 @@ private val PRTitleData = arrayOf(
 
 private val alignDetailFeedbackData = arrayOf(
     "자기소개", "경험",
-    "직무1", "직무2",
-    "경력1", "경력2",
-    "적성1", "적성2",
+    "직무", "회사",
+    "기술", "적성",
+    "기타",
 )
 
 private val alignMainFeedbackData = arrayOf(
@@ -1211,6 +1467,9 @@ private val prepareImageData = listOf(
 
 
     )
+
+
+
 
 private val prepareData = listOf(
     R.drawable.ic_prepare1 to R.string.Prepare_1,
