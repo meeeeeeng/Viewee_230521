@@ -16,7 +16,6 @@
 
 package com.example.viewee_230521
 
-import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -30,15 +29,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Arrangement.Absolute.Center
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -74,10 +70,6 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.materialIcon
-import androidx.compose.material3.Card
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -89,31 +81,21 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.modifier.modifierLocalMapOf
-import androidx.compose.ui.modifier.modifierLocalProvider
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.lerp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 import com.example.viewee_230521.ui.theme.BackgroundGrey
 import com.example.viewee_230521.ui.theme.CustomOrange
 import com.example.viewee_230521.ui.theme.UsBlue
-import com.example.viewee_230521.ui.theme.BackgroundGrey
-import com.example.viewee_230521.ui.theme.UsBlue
-import kotlin.math.absoluteValue
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -635,7 +617,7 @@ fun ChoicePRCardGrid(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PreparePlayPagerScreen(modifier: Modifier,images: List<Int>) {
-    var pagerState = rememberPagerState()
+    val pagerState = rememberPagerState()
 
 
         Column(
@@ -1156,6 +1138,203 @@ fun PlayPauseScreenPreview() {
 
 }
 
+//===================================== 정보 입력 후 성공 / 오류화면 ====================================
+
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun InputAfterSuccessScreen(
+) {
+
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(UsBlue.copy(.1f)),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 17.dp))
+        //  Surface(modifier = Modifier) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .padding(bottom = 20.dp), verticalAlignment = Alignment.CenterVertically
+
+        ) {
+
+
+            IconButton(onClick = { }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    "back", modifier = Modifier
+                        .alpha(.7f)
+                        .padding(horizontal = 30.dp)
+                )
+            }
+        }
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.Center
+        ) {
+
+
+
+
+
+        }
+        CustomTitleText(
+            modifier = Modifier
+                .padding(top = 40.dp, bottom = 10.dp)
+                .fillMaxWidth(),
+            "정보 입력 완료 !"
+        )
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_input_after_success),
+            contentDescription = null,
+            modifier = Modifier.fillMaxWidth()
+                .size(200.dp)
+                .padding(horizontal = 50.dp, vertical = 40.dp)
+        )
+
+        Text(
+            text = "수고하셨습니다!",
+            modifier = Modifier.padding(10.dp),
+            textAlign = TextAlign.Center,
+            fontSize = 13.sp,
+            color = Color.DarkGray.copy(.8f)
+        )
+
+        CustomTitleText(
+            modifier = Modifier
+                .fillMaxWidth()
+
+                .padding(10.dp), "정보 입력이 정상적으로\n완료되었습니다."
+        )
+
+        Image(painter = painterResource(id = R.drawable.ic_input_after_start_play_button),
+            contentDescription = null,
+            modifier = Modifier.fillMaxWidth()
+                .padding(top = 40.dp, bottom = 0.dp)
+                .clickable { }
+        )
+
+
+    }
+}
+
+
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun InputAfterFailScreen(
+){
+
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(UsBlue.copy(.1f)),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 17.dp))
+        //  Surface(modifier = Modifier) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .padding(bottom = 20.dp), verticalAlignment = Alignment.CenterVertically
+
+        ) {
+
+
+            IconButton(onClick = { }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    "back", modifier = Modifier
+                        .alpha(.7f)
+                        .padding(horizontal = 30.dp)
+                )
+            }
+        }
+        Column(modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center) {
+
+
+
+            Text(
+                text = "정보 입력 오류 !",
+                modifier = Modifier
+                    .padding(top=40.dp, bottom = 20.dp)
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 20.sp,
+                color = Color.DarkGray.copy(.8f)
+            )
+
+
+            Image(  painter = painterResource(id =  R.drawable.ic_input_after_fail)
+                , contentDescription = null,
+                modifier = Modifier.fillMaxWidth()
+                    .size(140.dp)
+                    .padding(horizontal = 50.dp, vertical = 40.dp)
+            )
+
+
+            Text(
+                text = "오류가 발생하였습니다.",
+                modifier = Modifier.padding(top=30.dp).fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                fontSize = 13.sp,
+                color = Color.DarkGray.copy(.8f)
+            )
+            Text(
+                text = "정보 입력이 정상적으로 \n" +
+                        "완료되지 않았습니다.",
+                modifier = Modifier
+                    .padding(top=20.dp,bottom = 60.dp)
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 20.sp,
+                color = Color.DarkGray.copy(.8f)
+            )
+
+            Image(  painter = painterResource(id =  R.drawable.ic_input_after_back_button)
+                , contentDescription = null,
+                modifier = Modifier.fillMaxWidth()
+                    .padding(top = 20.dp, bottom = 0.dp)
+                    .clickable {  }
+            )
+
+
+        }
+    }
+
+}
+
+
+
+@Preview(showBackground =  true,widthDp = 360, heightDp = 640)
+@Composable
+fun InputAfterSuccessScreenPreview() {
+
+    InputAfterSuccessScreen()
+
+}
+
+
+@Preview(showBackground =  true,widthDp = 360, heightDp = 640)
+@Composable
+fun InputAfterFailScreenPreview() {
+
+    InputAfterFailScreen()
+
+}
 
 
 //===================================== 면접진행 후 피드백 화면 ====================================
@@ -1186,7 +1365,9 @@ fun  PlayAfterDetailCard(
 
     ) {
         Column(
-            modifier = Modifier.padding(5.dp).padding(bottom = extraPadding.coerceAtLeast(0.dp))
+            modifier = Modifier
+                .padding(5.dp)
+                .padding(bottom = extraPadding.coerceAtLeast(0.dp))
                 ,
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -1388,6 +1569,207 @@ fun PlayAfterFeedbackApp() {
 }
 
 
+/////
+
+@Composable
+fun  HomeFeedbackCard(
+    modifier: Modifier = Modifier,
+    DetailTitle: String,
+    DetailContent: String
+) {
+
+    var isExpanded by remember { mutableStateOf(false) }
+
+
+    val extraPadding by animateDpAsState(
+        if (isExpanded) 48.dp else 0.dp,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        )
+    )
+
+    Box(
+        modifier = modifier
+            //.background(UsBlue.copy(alpha = 0.05f))
+            .border(1.dp, (UsBlue.copy(alpha = 0.5f)), RoundedCornerShape(10.dp))
+            .clickable { isExpanded = !isExpanded },
+
+        ) {
+        Column(
+            modifier = Modifier
+                .padding(5.dp)
+                .padding(bottom = extraPadding.coerceAtLeast(0.dp))
+            ,
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
+
+            ) {
+
+            // Row() {
+
+
+            Text(
+                text = DetailTitle,
+                modifier = Modifier
+                    .padding(top=10.dp,),
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 12.sp,
+                color = Color.DarkGray.copy(.8f)
+            )
+
+
+            IconButton(
+                onClick = { isExpanded = !isExpanded },
+
+                ) {
+                Icon(
+                    Icons.Filled.ArrowDropDown,
+                    "Show",modifier= Modifier
+                        .alpha(.7f)
+                        .fillMaxWidth()
+
+                )
+
+
+                // Text(if (isExpanded) "Show more" else "Show less")
+                //  }
+
+            }
+            if (isExpanded)  Text(
+                text = DetailContent,
+                modifier = Modifier
+                    .padding(10.dp),
+                textAlign = TextAlign.Left,
+                fontSize = 11.sp,
+                color = Color.Gray,
+
+                //maxLines = if (isExpanded) Int.MAX_VALUE else 3,
+
+
+            )
+
+            else
+                ""
+
+
+
+
+        }
+    }
+}
+
+
+@Composable
+fun HomeFeedbackCardGrid(
+    modifier: Modifier = Modifier
+) {
+    CustomTitleText( Modifier.padding(vertical = 30.dp),"230406 면접의 질문 피드백")
+    LazyVerticalGrid(
+        contentPadding = PaddingValues(horizontal = 30.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        // 그리드 각 항목들이 사이즈 비율이 안 맞았던 이유
+        // -> LazyHorizontalGrid 높이에 고정 값 주려면 패딩 값이나 space 값 도 계산 해서 해줘야…
+        modifier = modifier.height(480.dp),
+        columns = GridCells.Fixed(1),
+        content = {
+            items(DetailContentData.size) { index ->
+                HomeFeedbackCard(
+                    modifier = Modifier,
+                    DetailTitle = DetailTitleData[index],
+                    DetailContent = DetailContentData[index]
+
+                )
+
+            }
+        })
+}
+
+
+@Composable
+fun HomeFeedbackScreen(
+    modifier: Modifier = Modifier,
+) {
+    val scrollState = rememberScrollState()
+
+    Column(modifier = modifier
+        .fillMaxSize()
+
+    ) {
+        MainTopBar(Modifier.padding(horizontal = 17.dp, vertical = 25.dp))
+
+
+
+
+
+
+
+        Column(
+            modifier = Modifier
+                .background(Color.White)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+
+
+        ) {
+
+            CustomTitleText( Modifier.padding(top = 40.dp),"230406 면접의 총평 피드백")
+
+
+
+
+
+            Surface(modifier = Modifier
+                .padding(vertical = 40.dp, horizontal = 30.dp)
+
+            ) {
+
+
+                Text(
+                    text = stringResource(id = R.string.PlayAfterFeedbackTotalFeedbackData),
+                    modifier = Modifier
+                        .border(
+                            width = 1.dp,
+                            UsBlue.copy(alpha = .5f),
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                        .padding(30.dp),
+
+                    textAlign = TextAlign.Left,
+                    fontSize = 12.sp,
+                    color = Color.Gray
+                )
+            }
+
+
+            //ScrollableColumn()
+            //PlayAfterFeedbackMainFeedbackCardGrid()
+            PlayAfterDetailCardGrid(modifier= Modifier.padding(bottom=30.dp))
+
+        }
+    }
+
+}
+
+
+@Preview
+@Composable
+fun HomeFeedbackApp() {
+    MaterialTheme {
+        Scaffold(
+            // bottomBar = { BottomNavigation() }
+        ) { padding ->
+            HomeFeedbackScreen(
+                Modifier.padding(padding)
+            )
+        }
+    }
+
+}
+//////////////////////////////////////
 @Preview(showBackground = true, widthDp = 360, heightDp = 640)
 @Composable
 fun DataInputPreview1() {
