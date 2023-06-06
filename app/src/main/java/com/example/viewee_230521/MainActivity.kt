@@ -617,7 +617,7 @@ fun ChoicePRCardGrid(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PreparePlayPagerScreen(modifier: Modifier,images: List<Int>) {
-    val pagerState = rememberPagerState()
+    var pagerState = rememberPagerState()
 
 
         Column(
@@ -1419,7 +1419,7 @@ fun  PlayAfterDetailCard(
             )
 
             else
-            ""
+            " "
 
 
 
