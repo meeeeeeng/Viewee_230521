@@ -101,9 +101,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {  //ShowTotalFeedback()
-            MyApp()
+            //MyApp()
            // DataInputScreen()
             //PrepareScreen()
+            PlayAfterFeedbackApp()
         }
     }
 }
@@ -1194,7 +1195,8 @@ fun InputAfterSuccessScreen(
         Image(
             painter = painterResource(id = R.drawable.ic_input_after_success),
             contentDescription = null,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .size(200.dp)
                 .padding(horizontal = 50.dp, vertical = 40.dp)
         )
@@ -1216,7 +1218,8 @@ fun InputAfterSuccessScreen(
 
         Image(painter = painterResource(id = R.drawable.ic_input_after_start_play_button),
             contentDescription = null,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(top = 40.dp, bottom = 0.dp)
                 .clickable { }
         )
@@ -1268,7 +1271,7 @@ fun InputAfterFailScreen(
             Text(
                 text = "정보 입력 오류 !",
                 modifier = Modifier
-                    .padding(top=40.dp, bottom = 20.dp)
+                    .padding(top = 40.dp, bottom = 20.dp)
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.ExtraBold,
@@ -1279,7 +1282,8 @@ fun InputAfterFailScreen(
 
             Image(  painter = painterResource(id =  R.drawable.ic_input_after_fail)
                 , contentDescription = null,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .size(140.dp)
                     .padding(horizontal = 50.dp, vertical = 40.dp)
             )
@@ -1287,7 +1291,9 @@ fun InputAfterFailScreen(
 
             Text(
                 text = "오류가 발생하였습니다.",
-                modifier = Modifier.padding(top=30.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(top = 30.dp)
+                    .fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 fontSize = 13.sp,
                 color = Color.DarkGray.copy(.8f)
@@ -1296,7 +1302,7 @@ fun InputAfterFailScreen(
                 text = "정보 입력이 정상적으로 \n" +
                         "완료되지 않았습니다.",
                 modifier = Modifier
-                    .padding(top=20.dp,bottom = 60.dp)
+                    .padding(top = 20.dp, bottom = 60.dp)
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.ExtraBold,
@@ -1306,9 +1312,10 @@ fun InputAfterFailScreen(
 
             Image(  painter = painterResource(id =  R.drawable.ic_input_after_back_button)
                 , contentDescription = null,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(top = 20.dp, bottom = 0.dp)
-                    .clickable {  }
+                    .clickable { }
             )
 
 
@@ -1338,7 +1345,7 @@ fun InputAfterFailScreenPreview() {
 
 
 //===================================== 면접진행 후 피드백 화면 ====================================
-
+/////상진님 이게 맞나요,,여기가 맞나요,,? ㅜ ㅜ ㅜ
 @Composable
 fun  PlayAfterDetailCard(
     modifier: Modifier = Modifier,
@@ -1433,7 +1440,7 @@ fun  PlayAfterDetailCard(
 fun PlayAfterDetailCardGrid(
     modifier: Modifier = Modifier
 ) {
-    CustomTitleText( Modifier.padding(vertical = 30.dp),"230406 면접의 질문 피드백")
+    CustomTitleText( Modifier.padding(top = 20.dp, bottom = 30.dp),"✓ 230406 면접의 질문 피드백")
     LazyVerticalGrid(
         contentPadding = PaddingValues(horizontal = 30.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -1514,14 +1521,14 @@ fun PlayAfterFeedbackScreen(
 
             ) {
 
-                CustomTitleText( Modifier.padding(top = 40.dp),"230406 면접의 총평 피드백")
+                CustomTitleText( Modifier.padding(top = 50.dp),"✓ 230406 면접의 총평 피드백")
 
 
 
 
 
         Surface(modifier = Modifier
-            .padding(vertical = 40.dp, horizontal = 30.dp)
+            .padding(vertical = 30.dp, horizontal = 30.dp)
 
            ) {
 
